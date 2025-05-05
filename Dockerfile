@@ -14,7 +14,6 @@ FROM node:20
 
 WORKDIR /app
 
-
 ENV NODE_ENV=production
 
 COPY --from=builder /app/dist ./dist
@@ -23,4 +22,4 @@ COPY --from=builder /app/package*.json ./
 
 EXPOSE 4000
 
-CMD ["node", "dist/main"]
+CMD ["node", "dist/main.js"]
