@@ -4,6 +4,7 @@ import {
   UseInterceptors,
   UploadedFile,
   UseGuards,
+  Logger,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
@@ -36,6 +37,7 @@ export class UploadController {
   @UseGuards(AuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   uploadImage(@UploadedFile() file: Express.Multer.File) {
+    Logger.log(file)
     return this.cloudinaryService.uploadImageFile(file);
   }
 }

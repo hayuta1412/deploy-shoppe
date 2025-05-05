@@ -14,17 +14,28 @@ export class CloudinaryService {
           resolve(result as UploadApiResponse);
         },
       );
-
-      streamifier.createReadStream(file.buffer).pipe(uploadStream);
+  
+      if (!file?.buffer) {
+        return reject(new Error('No file buffer provided'));
+      }
+  
+      streamifier
+        .createReadStream(file.buffer)
+        .on('error', (err) => reject(err)) // bắt lỗi stream
+        .pipe(uploadStream);
     });
   }
+  
 
   async uploadImageFile(
     file: Express.Multer.File,
   ): Promise<APIResponseDTO<string> | BadRequestException> {
     try {
+      if(!file){
+        throw new BadRequestException("File not found")
+      }
       const { secure_url } = await this.uploadFile(file);
-      return {
+      return {  
         success: true,
         statusCode: 200,
         data: secure_url,
