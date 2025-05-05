@@ -36,13 +36,13 @@ import { PaypalModule } from './modules/paypal/paypal.module';
       inject: [ConfigService],
       useFactory: async (config) => ({
         type: 'postgres',
-        host: 'postgres',
+        host:  config.get('database.host'),
         port: config.get('database.port'),
-        username: 'postgres',
+        username: config.get('database.user'),
         password: config.get('database.password'),
         database: config.get('database.DB'),
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: false,
       }),
     }),
     BullModule.forRootAsync({
@@ -50,9 +50,11 @@ import { PaypalModule } from './modules/paypal/paypal.module';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         connection: {
-          host: configService.get('redis.host') || 'redis',
-          port: 6379,
-        },
+          host: process.env.REDIS_HOST || 'redis',
+          port: Number(process.env.REDIS_PORT) || 6379,
+          password: process.env.REDIS_PASSWORD,
+          username: process.env.REDIS_USER || 'default',
+        }
       }),
     }),
     UserModule,

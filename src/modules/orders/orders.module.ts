@@ -31,9 +31,11 @@ import { RoleModule } from '../role/role.module';
       name: 'orderQueue',
       connection: {
         host: process.env.REDIS_HOST || 'redis',
-        port: 6379,
+        port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : 6379,
+        password: process.env.REDIS_PASSWORD,
+        username: process.env.REDIS_USER || 'default',
       },
-    }),
+    }),    
     PaypalModule,
     EmailModule,
   ],

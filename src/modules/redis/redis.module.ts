@@ -8,10 +8,12 @@ import Redis from 'ioredis';
     {
       provide: 'REDIS_CLIENT',
       useFactory: () => {
-        return new Redis(
-          process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : 6379,
-          process.env.REDIS_HOST || 'redis',
-        );
+        return new Redis({
+          host: process.env.REDIS_HOST || 'redis',
+          port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : 6379,
+          password: process.env.REDIS_PASSWORD,
+          username: process.env.REDIS_USER || 'default', // Redis trên Railway mặc định là "default"
+        });
       },
     },
   ],
