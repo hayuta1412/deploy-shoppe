@@ -42,18 +42,18 @@ import { PaypalModule } from './modules/paypal/paypal.module';
         password: config.get('database.password'),
         database: config.get('database.DB'),
         autoLoadEntities: true,
-        synchronize: false,
+        synchronize: true,
       }),
     }),
     BullModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: async (config) => ({
         connection: {
-          host: process.env.REDIS_HOST || 'redis',
-          port: Number(process.env.REDIS_PORT) || 6379,
-          password: process.env.REDIS_PASSWORD,
-          username: process.env.REDIS_USER || 'default',
+          host: config.get('redis.host'),
+          port: config.get('redis.port'),
+          password: config.get('redis.password'),
+          username: config.get('redis.user'),
         }
       }),
     }),

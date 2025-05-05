@@ -20,15 +20,24 @@ import { RoleModule } from '../role/role.module';
     RoleModule,
     TypeOrmModule.forFeature([Category, Product]),
     ConfigModule,
-    ElasticsearchModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        node: configService.get('elastic.node'),
-        maxRetries: 10,
-        requestTimeout: 60000,
-      }),
-      inject: [ConfigService],
-    }),
+ElasticsearchModule.registerAsync({
+  imports: [ConfigModule],
+  inject: [ConfigService],
+  useFactory: async (configService: ConfigService) => ({
+    node: configService.get<string>('elastic.node'),
+    auth: {
+      username: configService.get<string>('elastic.user') ?? '',
+      password: configService.get<string>('elastic.password') ?? '',
+    },
+    ssl: {
+      rejectUnauthorized: false,
+    },
+    maxRetries: 10,
+    requestTimeout: 60000,
+  }),
+}),
+
+    
   ],
   controllers: [ProductController],
   providers: [ProductService, SearchService, ProductSyncService, JwtService],

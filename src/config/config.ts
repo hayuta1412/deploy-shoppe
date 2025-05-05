@@ -12,9 +12,11 @@ export default () => ({
   },
   elastic: {
     node: process.env.ELASTICSEARCH_NODE || 'http://localhost:9200',
+    user: process.env.ELASTIC_USER,
+    password: process.env.ELASTIC_PASSWORD
   },
   redis: {
-    host: process.env.REDIS_HOST || 'redis',
+    host: process.env.REDIS_HOST ,
     port:process.env.REDIS_PORT,
     password:process.env.REDIS_PASSWORD,
     user:process.env.REDIS_USER

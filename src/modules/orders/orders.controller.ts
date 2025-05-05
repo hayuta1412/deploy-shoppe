@@ -57,7 +57,7 @@ export class OrdersController {
       });
       const queueEvents = new QueueEvents('orderQueue', {
         connection: {
-          host: process.env.REDIS_HOST || 'redis',
+          host: process.env.REDIS_HOST,
           port: Number(process.env.REDIS_PORT) || 6379,
           password: process.env.REDIS_PASSWORD,
           username: process.env.REDIS_USER || 'default',
