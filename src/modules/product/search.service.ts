@@ -145,19 +145,8 @@ export class SearchService {
           bool: {
             should: [
               {
-                match: {
-                  name: {
-                    query: text,
-                    fuzziness: 'AUTO',
-                  },
-                },
-              },
-              {
-                match: {
-                  category: {
-                    query: text,
-                    fuzziness: 'AUTO',
-                  },
+                match_phrase_prefix: {
+                  name: text,
                 },
               },
             ],
@@ -175,13 +164,12 @@ export class SearchService {
         },
       },
     });
-  
     const product = response.hits.hits.map(
       (hit) => hit._source as ProductResponse,
     );
     return product;
   }
-  
+
   public async findProductForPaging(
     text: string,
     page: number = 1,
