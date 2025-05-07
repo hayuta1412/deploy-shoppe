@@ -48,7 +48,7 @@ export class Product {
 
   @IsString()
   @IsNotEmpty()
-  @Length(1, 255)
+  @Length(1, 2000)
   @ApiProperty({
     description: 'Short product description',
     maxLength: 255,
